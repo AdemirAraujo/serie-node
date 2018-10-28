@@ -1,3 +1,2 @@
 node_modules
-src/config/auth.json
-src/config/mail.json
+**/config
