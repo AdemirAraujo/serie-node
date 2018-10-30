@@ -18,8 +18,8 @@ const TaskSchema = new mongoose.Schema({
     },
     completed: {
         type: Boolean,
-        required: true,
         default: false,
+        required: true,
     },
     CreatedAt: {
         type: Date,
