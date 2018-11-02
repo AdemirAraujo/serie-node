@@ -63,23 +63,24 @@ router.put('/:projectId', async (req, res) => {
         const {title, description, tasks } = req.body;
         
         //Atauliza o Projeto
-        const project = await Project.findByIdAndUpdate(req.params.projectId, { title, description }, { new:true });
-
+        const project = await Project.findOneAndUpdate(req.params.projectId, { title, description }, { new:true });
+        
         //Limpa os tasks
         project.tasks = [];
         await Task.remove({ project: project._id });
-
+        
         //Cria os Tasks
         await Promise.all(tasks.map( async task => {
             const projectTask = new Task({ ...task, project: project._id });
             await projectTask.save();
             project.tasks.push(projectTask);
         }));
-
+        
         //Salva o Projeto
         await project.save();
 
         return res.send({ project });
+
     } catch(err) {
         return res.status(400).send( { error: 'Error updating Project', err } );
     }
